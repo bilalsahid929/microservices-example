@@ -3,23 +3,22 @@ import { randomBytes } from "crypto";
 
 const app = express();
 app.use(express.json());
-const posts = {};
 
+const commentsByPostId = {};
 app.get("/posts/:id/comments", (req, res) => {
-  res.send(posts);
+  res.send(commentsByPostId[req.params.id] || []);
 });
 
 app.post("/posts/:id/comments", (req, res) => {
-  const id = randomBytes(4).toString("hex");
-  const { title } = req.body;
-
-  posts[id] = {
-    id,
-    title,
-  };
-  res.status(201).send(posts[id]);
+  const commentId = randomBytes(4).toString("hex");
+  const { content } = req.body;
+  const comments = commentsByPostId[req.params.id] || [];
+  console.log("content", content);
+  comments.push({ id: commentId, content });
+  commentsByPostId[req.params.id] = comments;
+  res.status(201).send(comments);
 });
 
-app.listen(4000, () => {
-  console.log("Listening on port 4000");
+app.listen(4001, () => {
+  console.log("Listening on port 4001");
 });
