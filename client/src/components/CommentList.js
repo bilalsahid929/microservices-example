@@ -47,7 +47,7 @@ const CommentList = ({ postId }) => {
   ));
   return (
     <div>
-      CommentList + ""+""
+      CommentList
       <br />
       <ul>{renderedComments}</ul>
     </div>
